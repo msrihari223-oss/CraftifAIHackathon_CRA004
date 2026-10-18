@@ -1,0 +1,19 @@
+[Unit]
+Description=AI Traffic and Crosswalk Analytics System - Roadside Unit
+After=network.target docker.service mosquitto.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=jetson
+WorkingDirectory=/opt/traffic-analytics
+ExecStartPre=/usr/bin/jetson_clocks
+ExecStart=/usr/bin/python3 -m backend.main --host 0.0.0.0 --port 8000 --precision INT8
+Restart=always
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

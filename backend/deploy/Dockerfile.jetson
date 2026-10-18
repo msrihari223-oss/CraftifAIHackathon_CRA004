@@ -1,0 +1,28 @@
+# NVIDIA Jetson Edge Roadside Unit Container (JetPack 5.1 / 6.0)
+FROM nvcr.io/nvidia/l4t-tensorrt:r8.6.1-runtime
+
+WORKDIR /opt/traffic-analytics
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-pip \
+    python3-opencv \
+    libgstreamer1.0-0 \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    mosquitto-clients \
+    curl && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# Run edge pipeline with INT8 TensorRT engine
+ENV JETSON_CLOCKS=1
+ENV TRT_PRECISION=INT8
+ENV RTSP_STREAM_URL=rtsp://localhost:8554/live
+
+CMD ["python3", "-m", "backend.main", "--mode", "rtsp", "--precision", "INT8"]

@@ -1,0 +1,56 @@
+{
+  "system_name": "Traffic and Crosswalk Analytics System",
+  "domain": "Smart Cities - Pedestrian Crossings and Road Intersections",
+  "deployment_unit": "Edge Roadside Pole-Mounted Unit",
+  "specifications": {
+    "camera_installation": {
+      "pole_height_meters": 6.5,
+      "depression_angle_deg": 35.0,
+      "field_of_view_horizontal_deg": 85.0,
+      "coverage_area": "4-way intersection with two marked pedestrian crosswalks and dual bike lanes"
+    },
+    "input_modalities": [
+      { "type": "RTSP", "sample_url": "rtsp://edge-unit-01.city.local:554/live/stream0", "resolution": "1920x1080", "fps": 30 },
+      { "type": "USB / V4L2", "sample_device": "/dev/video0", "resolution": "1280x720", "fps": 30 },
+      { "type": "CSI Camera", "sample_interface": "MIPI-CSI2 (Sony IMX477)", "resolution": "1920x1080", "fps": 60 },
+      { "type": "Video File", "sample_format": "MP4 / H.264 / H.265", "resolution": "1920x1080", "fps": 30 }
+    ],
+    "target_classes": [
+      { "id": 0, "name": "pedestrian", "coco_id": 0, "color": "#10B981", "min_confidence": 0.45 },
+      { "id": 1, "name": "bicycle", "coco_id": 1, "color": "#06B6D4", "min_confidence": 0.40 },
+      { "id": 2, "name": "motorcycle", "coco_id": 3, "color": "#F59E0B", "min_confidence": 0.45 },
+      { "id": 3, "name": "car", "coco_id": 2, "color": "#3B82F6", "min_confidence": 0.50 },
+      { "id": 4, "name": "bus", "coco_id": 5, "color": "#8B5CF6", "min_confidence": 0.50 },
+      { "id": 5, "name": "truck", "coco_id": 7, "color": "#EC4899", "min_confidence": 0.50 }
+    ],
+    "operational_constraints": {
+      "max_end_to_end_latency_ms": 33.3,
+      "min_throughput_fps": 30.0,
+      "power_envelope_watts": 15.0,
+      "target_hardware": "NVIDIA Jetson Orin Nano / Jetson AGX Xavier / RTX GPU",
+      "quantization_target": "INT8 with Entropy Calibrator v2",
+      "duplicate_crossing_prevention_window_seconds": 3.0,
+      "counting_line_direction_support": ["Inbound", "Outbound", "Bidirectional"]
+    },
+    "telemetry_and_export": {
+      "mqtt_broker_protocol": "mqtt://",
+      "mqtt_topics": [
+        "smartcity/traffic/crosswalk_events",
+        "smartcity/traffic/class_counts",
+        "smartcity/traffic/safety_alerts"
+      ],
+      "json_export_fields": [
+        "event_id",
+        "tracked_object_id",
+        "object_class",
+        "crossing_direction",
+        "timestamp",
+        "updated_count",
+        "line_id",
+        "line_name",
+        "confidence",
+        "estimated_speed_kmh"
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "engine_file": "backend/export\\yolov8n_int8.engine",
+  "model_id": "yolov8n",
+  "precision": "INT8",
+  "compilation_timestamp": "2026-10-18T05:38:29Z",
+  "tensorrt_version": "8.6.1.6",
+  "cuda_version": "12.2",
+  "workspace_mb": 2048,
+  "metrics": {
+    "precision": "INT8 (Calibrated with Entropy v2)",
+    "inference_latency_ms": 7.8,
+    "preprocess_latency_ms": 1.8,
+    "postprocess_nms_ms": 1.2,
+    "bytetrack_ms": 2.0,
+    "end_to_end_latency_ms": 12.8,
+    "throughput_fps": 78.1,
+    "vram_allocated_mb": 430,
+    "power_consumption_watts": 8.6,
+    "thermal_deg_c": 46.2,
+    "map50": 67.2,
+    "map50_95": 36.8,
+    "speedup_vs_fp32": "2.47x Throughput Gain",
+    "accuracy_retention": "99.1% of FP32 mAP",
+    "class_ap50": {
+      "pedestrian": 70.9,
+      "bicycle": 62.1,
+      "motorcycle": 64.7,
+      "car": 78.9,
+      "bus": 71.5,
+      "truck": 69.8
+    }
+  }
+}
